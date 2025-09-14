@@ -11,4 +11,18 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_contratos">Contratos</string>
+    <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+
+    <!--Registro de empleador-->
+    <string name="Label_registrar_empleador">Registrar Empleador</string>
+    <string name="nombre_completo">Nombre Completo</string>
+    <string name="correo_electronico">Correo Electrónico</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="confirmar_contraseña">Confirmar Contraseña</string>
+    <string name="registrar_empleador">Registrarme</string>
+
+
 </resources>

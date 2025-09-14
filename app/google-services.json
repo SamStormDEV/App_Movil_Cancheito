@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451600479024",
+    "project_id": "cancheito-75c44",
+    "storage_bucket": "cancheito-75c44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451600479024:android:52d7b17a2ff48e1927cef5",
+        "android_client_info": {
+          "package_name": "com.example.myappcancheito"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkyKCAqXVYuaHlmH1MmYmm-LXKRbQzL5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

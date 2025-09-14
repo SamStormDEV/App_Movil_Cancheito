@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myappcancheito.empleador.EmpleadorActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
         object : CountDownTimer(4000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
-                startActivity(Intent(applicationContext, MainActivity::class.java))
+                startActivity(Intent(applicationContext, EmpleadorActivity::class.java))
                 finish()
             }
         }.start()
