@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/tienda_icono_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Myappcancheito">
+        android:theme="@style/Theme.Myappcancheito.Splash">
         <activity
             android:name=".SplashActivity"
             android:exported="true">

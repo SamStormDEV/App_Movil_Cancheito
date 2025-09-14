@@ -22,4 +22,11 @@
     <style name="Theme.Myappcancheito.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Myappcancheito.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Myappcancheito.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@drawable/bg_splash_gradient</item>
+        <item name="android:textColorPrimary">#B0B0B0</item>
+    </style>
 </resources>

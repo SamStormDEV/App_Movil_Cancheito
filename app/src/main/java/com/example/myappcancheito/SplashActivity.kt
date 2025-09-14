@@ -13,8 +13,6 @@ class SplashActivity : AppCompatActivity() {
 
         val saludoTextView = findViewById<TextView>(R.id.txtSaludo)
         saludoTextView.text = getGreeting()
-
-        // Animación moderna en el saludo
         saludoTextView.alpha = 0f
         saludoTextView.translationY = 100f
         saludoTextView.animate()
@@ -26,17 +24,15 @@ class SplashActivity : AppCompatActivity() {
         iniciarCuentaRegresiva()
     }
 
-    // Función para saludo dinámico según la hora
     private fun getGreeting(): String {
         val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
         return when (hour) {
-            in 0..11 -> "¡Buenos días!"
-            in 12..18 -> "¡Buenas tardes!"
-            else -> "¡Buenas noches!"
+            in 0..11 -> "¡Buenos días! 😉"
+            in 12..18 -> "¡Buenas tardes! 😎"
+            else -> "¡Buenas noches! 🤓"
         }
     }
 
-    // Timer de 4 segundos para ir a MainActivity
     private fun iniciarCuentaRegresiva() {
         object : CountDownTimer(4000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
