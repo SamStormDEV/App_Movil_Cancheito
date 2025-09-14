@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#121212"
+    tools:context=".SplashActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Animación Lottie -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieSplash"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:lottie_fileName="canheito.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+
+        <!-- Texto de saludo -->
+        <TextView
+            android:id="@+id/txtSaludo"
+            android:textSize="22sp"
+            android:textStyle="bold|italic"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="25dp"
+            android:text="Hola!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>
