@@ -55,14 +55,19 @@ class EmpleadorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun cerrarSesion() {
         firebaseAuth.signOut()
-        startActivity(Intent(this, LoginEmpleadorActivity::class.java))
+        val intent = Intent(this, LoginEmpleadorActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         finish()
         Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
     }
 
     private fun comprobarSesion() {
         if (firebaseAuth.currentUser == null) {
-            startActivity(Intent(this, LoginEmpleadorActivity::class.java))
+            val intent = Intent(this, LoginEmpleadorActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
             Toast.makeText(this, "Registrate", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
