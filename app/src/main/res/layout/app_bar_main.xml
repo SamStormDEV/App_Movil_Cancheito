@@ -21,7 +21,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
-        android:id="@+id/main_content_frame"
+        android:id="@+id/navFragment"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/appBarLayout"
         android:layout_width="match_parent"
