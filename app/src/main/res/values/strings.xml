@@ -23,6 +23,9 @@
     <string name="contraseña">Contraseña</string>
     <string name="confirmar_contraseña">Confirmar Contraseña</string>
     <string name="registrar_empleador">Registrarme</string>
+    <string name="Label_login_empleador">Login Empleador</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+
 
 
 </resources>

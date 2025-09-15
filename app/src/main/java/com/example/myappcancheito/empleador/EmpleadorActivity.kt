@@ -22,9 +22,14 @@ class EmpleadorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_empleador)
     }
 
+    private fun cerrarSession(){
+        firebaseAuth!!.signOut()
+        comprobarSesion()
+        Toast.makeText(applicationContext, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+    }
     private fun comprobarSesion() {
         if (firebaseAuth!!.currentUser == null) {
-            startActivity(Intent(applicationContext, Register_empleador_Activity::class.java))
+            startActivity(Intent(applicationContext, RegisterEmpleadorActivity::class.java))
             Toast.makeText(applicationContext, "Registrate", Toast.LENGTH_SHORT).show()
         }else{
             Toast.makeText(applicationContext, "Bienvenido", Toast.LENGTH_SHORT).show()

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<uses-permission
-    android:name="android.permission.INTERNET">
 
-</uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,18 +11,22 @@
         android:icon="@mipmap/tienda_icono"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/tienda_icono_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Myappcancheito.Splash">
+        android:supportsRtl="true">
         <activity
-            android:name=".empleador.Register_empleador_Activity"
+            android:name=".empleador.LoginEmpleadorActivity"
             android:theme="@style/Theme.Myappcancheito"
             android:exported="false" />
+        <activity
+            android:name=".empleador.RegisterEmpleadorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito" />
         <activity
             android:name=".empleador.EmpleadorActivity"
-            android:theme="@style/Theme.Myappcancheito"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito" />
         <activity
             android:name=".SplashActivity"
+            android:theme="@style/Theme.Myappcancheito.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

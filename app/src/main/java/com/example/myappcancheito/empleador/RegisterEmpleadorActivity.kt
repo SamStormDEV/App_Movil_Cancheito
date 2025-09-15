@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class Register_empleador_Activity : AppCompatActivity() {
+class RegisterEmpleadorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterEmpleadorBinding
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
@@ -34,7 +34,10 @@ class Register_empleador_Activity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        binding.tvIrLogin.setOnClickListener {
+            startActivity(Intent(this, LoginEmpleadorActivity::class.java))
+            finish()
+        }
         binding.btnRegistrarme.setOnClickListener {
             validateAndRegister()
         }
@@ -84,7 +87,7 @@ class Register_empleador_Activity : AppCompatActivity() {
             database.getReference("Usuarios").child(uid).setValue(userData).await()
             withContext(Dispatchers.Main) {
                 showToast("Registro exitoso")
-                startActivity(Intent(this@Register_empleador_Activity, EmpleadorActivity::class.java))
+                startActivity(Intent(this@RegisterEmpleadorActivity, EmpleadorActivity::class.java))
                 finish()
             }
         } catch (e: Exception) {
