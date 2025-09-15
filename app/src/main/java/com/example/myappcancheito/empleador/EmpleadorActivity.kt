@@ -53,6 +53,10 @@ class EmpleadorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             .commit()
     }
 
+    override fun onStart() {
+        super.onStart()
+        comprobarSesion()
+    }
     private fun cerrarSesion() {
         firebaseAuth.signOut()
         val intent = Intent(this, LoginEmpleadorActivity::class.java)
