@@ -19,7 +19,7 @@
     </group>
 
     <item
-        android:id="@+id/op_cerrar_sesion"
+        android:id="@+id/ap_cerrar_sesion"
         android:title="@string/menu_cerrar_sesion"
         android:icon="@drawable/icon_cerrar_session"
         />
