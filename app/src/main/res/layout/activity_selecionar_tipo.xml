@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelecionarTipoActivity">
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/connect_without_contact_24px"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tipoempleador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tipo_empleador"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        app:cornerRadius="18dp"
+        style="@style/Widget.MaterialComponents.Button"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/interactive_space_24px"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tipopostulante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tipo_postulante"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        app:cornerRadius="18dp"
+        style="@style/Widget.MaterialComponents.Button"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>

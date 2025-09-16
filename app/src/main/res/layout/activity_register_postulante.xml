@@ -6,20 +6,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".empleador.RegisterEmpleadorActivity">
+    tools:context=".postulante.RegisterPostulanteActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
-
+        android:padding="15dp">
         <TextView
             android:id="@+id/tv_titulo_login"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="@string/Label_registrar_empleador"
+            android:text="@string/Label_registrar_postulante"
             android:layout_marginTop="10dp"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -28,10 +27,10 @@
             android:id="@+id/logo_empleador"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_gravity="center"
             android:src="@drawable/article_person_24px"
             android:contentDescription="@string/Label_registrar_empleador"
             android:layout_marginBottom="24dp"/>
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,10 +38,10 @@
             app:startIconDrawable="@drawable/person_24px">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_nombre_completo"
+                android:id="@+id/et_nombre_completoPos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nombre_completo"
+                android:hint="@string/nombre_completo_postulante"
                 android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,10 +52,10 @@
             app:startIconDrawable="@drawable/alternate_email_24px">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_correo"
+                android:id="@+id/et_correoPos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/correo_electronico"
+                android:hint="@string/correo_electronico_postulante"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,10 +67,10 @@
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_contrasena"
+                android:id="@+id/et_contrasenaPos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/contraseña"
+                android:hint="@string/confirmar_contraseña_postulante"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,23 +82,23 @@
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_confirmar_contrasena"
+                android:id="@+id/et_confirmar_contrasenaPos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/confirmar_contraseña"
+                android:hint="@string/confirmar_contraseña_postulante"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_registrarme"
+            android:id="@+id/btn_registrarmePos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cornerRadius="18dp"
-            android:text="@string/registrar_empleador"
+            android:text="@string/registrar_postulante"
             android:layout_marginTop="14dp"
             android:gravity="center"/>
         <TextView
-            android:id="@+id/tv_ir_login"
+            android:id="@+id/tv_ir_loginPos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¿Ya tienes cuenta? Inicia sesión"
@@ -108,6 +107,6 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true"/>
-    </LinearLayout>
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>
