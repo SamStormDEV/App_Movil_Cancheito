@@ -2,26 +2,42 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/tienda_icono"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Myappcancheito">
+        android:roundIcon="@mipmap/tienda_icono_round"
+        android:supportsRtl="true">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Myappcancheito.NoActionBar">
+            android:name=".empleador.LoginEmpleadorActivity"
+            android:theme="@style/Theme.Myappcancheito"
+            android:exported="false" />
+        <activity
+            android:name=".empleador.RegisterEmpleadorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito" />
+        <activity
+            android:name=".empleador.EmpleadorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito.NoActionBar" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.Myappcancheito.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Myappcancheito.NoActionBar" />
     </application>
 
 </manifest>
