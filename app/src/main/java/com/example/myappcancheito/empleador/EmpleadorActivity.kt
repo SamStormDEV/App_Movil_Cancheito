@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.myappcancheito.R
+import com.example.myappcancheito.SelecionarTipoActivity
 import com.example.myappcancheito.databinding.ActivityEmpleadorBinding
 import com.example.myappcancheito.empleador.Nav_fragment_Empleador.FragmentInicioV
 import com.google.android.material.navigation.NavigationView
@@ -59,7 +60,7 @@ class EmpleadorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
     private fun cerrarSesion() {
         firebaseAuth.signOut()
-        val intent = Intent(this, LoginEmpleadorActivity::class.java)
+        val intent = Intent(this, SelecionarTipoActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
@@ -68,7 +69,7 @@ class EmpleadorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun comprobarSesion() {
         if (firebaseAuth.currentUser == null) {
-            val intent = Intent(this, LoginEmpleadorActivity::class.java)
+            val intent = Intent(this, SelecionarTipoActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()

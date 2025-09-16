@@ -8,13 +8,23 @@
     <string name="action_settings">Settings</string>
     <string name="action_welcome">Bienvenido</string>
 
+    <string name="login_title_empleador">Login Empleador</string>
+    <string name="login_title_postulante">Login Postulante</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="tipo_empleador">Eres un Empleador?</string>
+    <string name="tipo_postulante">Eres un Postulante?</string>
+
     <string name="menu_inicio">Inicio</string>
     <string name="menu_contratos">Contratos</string>
     <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="menu_inicio_postulante">Inicio</string>
+    <string name="menu_Perfil_postulante">Mi Perfil</string>
+    <string name="menu_cerrar_sesion_postulante">Cerrar Sesión</string>
 
     <!--Registro de empleador-->
     <string name="Label_registrar_empleador">Registrar Empleador</string>
@@ -30,5 +40,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--Registro de postulante-->
+    <string name="Label_registrar_postulante">Registrar Postulante</string>
+    <string name="nombre_completo_postulante">Nombre Completo</string>
+    <string name="correo_electronico_postulante">Correo Electrónico</string>
+    <string name="contraseña_postulante">Contraseña</string>
+    <string name="confirmar_contraseña_postulante">Confirmar Contraseña</string>
+    <string name="registrar_postulante">Registrarme</string>
+    <string name="Label_login_postulante">Login Postulante</string>
+    <string name="iniciar_sesion_postulante">Iniciar Sesión</string>
 
 </resources>

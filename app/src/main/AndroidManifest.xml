@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,9 +13,21 @@
         android:roundIcon="@mipmap/tienda_icono_round"
         android:supportsRtl="true">
         <activity
+            android:name=".SelecionarTipoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito.NoActionBar"/>
+        <activity
+            android:name=".postulante.LoginPostulanteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito"/>
+        <activity
+            android:name=".postulante.RegisterPostulanteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito"/>
+        <activity
             android:name=".empleador.LoginEmpleadorActivity"
-            android:theme="@style/Theme.Myappcancheito"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Myappcancheito" />
         <activity
             android:name=".empleador.RegisterEmpleadorActivity"
             android:exported="false"
@@ -26,8 +38,8 @@
             android:theme="@style/Theme.Myappcancheito.NoActionBar" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/Theme.Myappcancheito.Splash"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Myappcancheito.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".postulante.MainActivityPostulante"
             android:exported="true"
             android:theme="@style/Theme.Myappcancheito.NoActionBar" />
     </application>
