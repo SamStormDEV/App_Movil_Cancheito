@@ -27,26 +27,16 @@ class RegisterPostulanteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         enableEdgeToEdge()
         binding = ActivityRegisterPostulanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
         binding.tvIrLoginPos.setOnClickListener {
             startActivity(Intent(this, LoginPostulanteActivity::class.java))
             finish()
         }
-
         binding.btnRegistrarmePos.setOnClickListener {
             validateAndRegister()
         }
-
         checkCurrentUser()
     }
 
@@ -131,6 +121,7 @@ class RegisterPostulanteActivity : AppCompatActivity() {
                 "nombre_completo" to fullName,
                 "email" to email,
                 "tipoUsuario" to "postulante",
+                "usuario_verificado" to false,
                 "tiempo_registro" to timestamp
             )
             database.getReference("Usuarios").child(uid).setValue(userData).await()
