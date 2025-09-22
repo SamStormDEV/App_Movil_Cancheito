@@ -1,9 +1,6 @@
 package com.example.myappcancheito.postulante
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
@@ -15,6 +12,7 @@ import com.example.myappcancheito.R
 import com.example.myappcancheito.databinding.ActivityRegisterPostulanteBinding
 import com.example.myappcancheito.Constantes
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +27,7 @@ class RegisterPostulanteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         enableEdgeToEdge()
         binding = ActivityRegisterPostulanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -61,7 +60,9 @@ class RegisterPostulanteActivity : AppCompatActivity() {
     private fun verifyUserType(uid: String) {
         val loadingDialog = createLoadingDialog()
         loadingDialog.show()
-        database.getReference("Usuarios").child(uid).get()
+        val dbRef = database.getReference("Usuarios").child(uid)
+        dbRef.keepSynced(true)
+        dbRef.get()
             .addOnSuccessListener { snapshot ->
                 loadingDialog.dismiss()
                 val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
@@ -93,34 +94,29 @@ class RegisterPostulanteActivity : AppCompatActivity() {
             password.length < 6 -> binding.etContrasenaPos.error = "Contraseña debe tener al menos 6 caracteres"
             confirmPassword.isBlank() -> binding.etConfirmarContrasenaPos.error = "Confirme la contraseña"
             password != confirmPassword -> binding.etConfirmarContrasenaPos.error = "Las contraseñas no coinciden"
-            else -> {
-                if (isOnline()) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        registerPostulante(fullName, email, password)
-                    }
-                } else {
-                    Toast.makeText(this, "No hay conexión. Registro requiere internet.", Toast.LENGTH_SHORT).show()
-                }
+            else -> CoroutineScope(Dispatchers.IO).launch {
+                registerPostulante(fullName, email, password)
             }
         }
     }
 
-    private fun isOnline(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-    }
-
     private suspend fun registerPostulante(fullName: String, email: String, password: String) {
         try {
+            withContext(Dispatchers.Main) { showToast("Verificando correo...") }
+            val signInMethods = firebaseAuth.fetchSignInMethodsForEmail(email).await().signInMethods ?: emptyList()
+            if (!signInMethods.isEmpty()) {
+                withContext(Dispatchers.Main) { showToast("Este correo ya está registrado") }
+                return
+            }
+
             withContext(Dispatchers.Main) { showToast("Creando cuenta...") }
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val uid = authResult.user!!.uid
             val dbRef = database.getReference("Usuarios").child(uid)
             dbRef.keepSynced(true)
             saveUserData(uid, fullName, email)
+        } catch (e: FirebaseAuthUserCollisionException) {
+            withContext(Dispatchers.Main) { showToast("Este correo ya está registrado") }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) { showToast("Error en el registro: ${e.message}") }
         }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Cancheito</string>
+    <string name="default_web_client_id">451600479024-3mc12eoo0i78bneb662fnduq8a5t6m4u.apps.googleusercontent.com</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -14,6 +15,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="iniciar_sesion_google">Iniciar sesión con Google</string>
+    <string name="google_sign_in">Iniciar sesión con Google (ícono)</string>
 
     <string name="tipo_empleador">Eres un Empleador?</string>
     <string name="tipo_postulante">Eres un Postulante?</string>
