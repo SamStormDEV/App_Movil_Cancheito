@@ -43,7 +43,6 @@ class LoginPostulanteActivity : AppCompatActivity() {
         binding = ActivityLoginPostulanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
-        credentialManager = CredentialManager.create(this)
         FirebaseDatabase.getInstance().getReference("Usuarios").keepSynced(true)
         binding.btnLoginPos.setOnClickListener {
             validarInfo()
