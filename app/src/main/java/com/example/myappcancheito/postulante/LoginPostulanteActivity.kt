@@ -36,6 +36,7 @@ class LoginPostulanteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        credentialManager = CredentialManager.create(this)
         try {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         } catch (e: Exception) {
@@ -51,7 +52,11 @@ class LoginPostulanteActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterPostulanteActivity::class.java))
         }
         binding.cardGoogle.setOnClickListener {
-            signInWithGoogle()
+            if (::credentialManager.isInitialized) {
+                signInWithGoogle()
+            } else {
+                Toast.makeText(this, "Error: Credential Manager no inicializado", Toast.LENGTH_SHORT).show()
+            }
         }
         checkCurrentUser()
     }
@@ -191,7 +196,15 @@ class LoginPostulanteActivity : AppCompatActivity() {
                 )
                 handleGoogleCredential(result.credential)
             } catch (e: GetCredentialException) {
-                Toast.makeText(this@LoginPostulanteActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                if (e.message?.contains("No credentials available") == true) {
+                    Toast.makeText(
+                        this@LoginPostulanteActivity,
+                        "No hay cuentas de Google disponibles en el dispositivo",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(this@LoginPostulanteActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
