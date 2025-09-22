@@ -239,6 +239,7 @@ class LoginPostulanteActivity : AppCompatActivity() {
             "nombre_completo" to fullName,
             "email" to email,
             "tipoUsuario" to "postulante",
+            "usuario_verificado" to false,
             "tiempo_registro" to timestamp
         )
         dbRef.setValue(userData)
