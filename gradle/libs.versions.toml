@@ -18,6 +18,8 @@ googleServiceV="4.4.3"
 firebaseAuthV="24.0.1"
 firebaseDatabaseV="22.0.0"
 storageV="22.0.1"
+credentialsV = "1.3.0"
+googleIdV = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +38,10 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 firebaseAuth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthV" }
 firebaseDatabase = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabaseV" }
 storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "storageV" }
+
+credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentialsV" }
+credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsV" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleIdV" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

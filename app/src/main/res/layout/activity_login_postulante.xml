@@ -69,8 +69,39 @@
             android:text="@string/iniciar_sesion_postulante"
             android:layout_marginTop="14dp"
             android:gravity="center"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="15dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
 
-        <TextView
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/btnLoginGoogle"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/google_sign_in"
+                android:padding="8dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="google.json"
+                app:lottie_loop="true" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
             android:id="@+id/tv_ir_registroPos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +109,7 @@
             android:textColor="@color/purple_500"
             android:textStyle="bold"
             android:layout_marginTop="20dp"/>
+
     </LinearLayout>
 
 </ScrollView>

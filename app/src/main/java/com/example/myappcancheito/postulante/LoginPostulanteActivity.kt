@@ -10,13 +10,25 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
 import com.example.myappcancheito.databinding.ActivityLoginPostulanteBinding
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class LoginPostulanteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginPostulanteBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var credentialManager: CredentialManager
 
     private var email = ""
     private var password = ""
@@ -31,12 +43,16 @@ class LoginPostulanteActivity : AppCompatActivity() {
         binding = ActivityLoginPostulanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
+        credentialManager = CredentialManager.create(this)
         FirebaseDatabase.getInstance().getReference("Usuarios").keepSynced(true)
         binding.btnLoginPos.setOnClickListener {
             validarInfo()
         }
         binding.tvIrRegistroPos.setOnClickListener {
             startActivity(Intent(this, RegisterPostulanteActivity::class.java))
+        }
+        binding.cardGoogle.setOnClickListener {
+            signInWithGoogle()
         }
         checkCurrentUser()
     }
@@ -155,6 +171,84 @@ class LoginPostulanteActivity : AppCompatActivity() {
                     firebaseAuth.signOut()
                     Toast.makeText(this, "Error al verificar usuario: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+            }
+    }
+
+    private fun signInWithGoogle() {
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(getString(com.example.myappcancheito.R.string.default_web_client_id))
+            .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@LoginPostulanteActivity
+                )
+                handleGoogleCredential(result.credential)
+            } catch (e: GetCredentialException) {
+                Toast.makeText(this@LoginPostulanteActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun handleGoogleCredential(credential: androidx.credentials.Credential) {
+        if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+            try {
+                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+            } catch (e: GoogleIdTokenParsingException) {
+                Toast.makeText(this, "Token inválido", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Credencial no es Google", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val loadingDialog = createLoadingDialog()
+        loadingDialog.show()
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        firebaseAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = firebaseAuth.currentUser
+                    val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
+                    if (isNewUser && user != null) {
+                        saveNewGoogleUser(user.uid, user.displayName ?: "", user.email ?: "")
+                    } else {
+                        verifyUserType(user?.uid ?: "", loadingDialog)
+                    }
+                } else {
+                    loadingDialog.dismiss()
+                    Toast.makeText(this, "Fallo en autenticación: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun saveNewGoogleUser(uid: String, fullName: String, email: String) {
+        val dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+        val timestamp = System.currentTimeMillis()
+        val userData = mapOf(
+            "uid" to uid,
+            "nombre_completo" to fullName,
+            "email" to email,
+            "tipoUsuario" to "postulante",
+            "tiempo_registro" to timestamp
+        )
+        dbRef.setValue(userData)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Registro con Google exitoso", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivityPostulante::class.java))
+                finishAffinity()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al guardar: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
