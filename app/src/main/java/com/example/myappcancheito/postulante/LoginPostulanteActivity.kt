@@ -24,19 +24,20 @@ class LoginPostulanteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        } catch (e: Exception) {
+        }
         binding = ActivityLoginPostulanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         firebaseAuth = FirebaseAuth.getInstance()
-
+        FirebaseDatabase.getInstance().getReference("Usuarios").keepSynced(true)
         binding.btnLoginPos.setOnClickListener {
             validarInfo()
         }
-
         binding.tvIrRegistroPos.setOnClickListener {
             startActivity(Intent(this, RegisterPostulanteActivity::class.java))
         }
-
         checkCurrentUser()
     }
 
@@ -65,11 +66,7 @@ class LoginPostulanteActivity : AppCompatActivity() {
                 binding.etContrasenaPos.requestFocus()
             }
             else -> {
-                if (isOnline()) {
-                    loginPostulante()
-                } else {
-                    Toast.makeText(this, "No hay conexión a internet. Por favor, verifica tu conexión.", Toast.LENGTH_SHORT).show()
-                }
+                loginPostulante()
             }
         }
     }
@@ -88,19 +85,31 @@ class LoginPostulanteActivity : AppCompatActivity() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { authResult ->
                 val uid = authResult.user?.uid ?: return@addOnSuccessListener
-                val dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
-                dbRef.keepSynced(true)
                 verifyUserType(uid, loadingDialog)
             }
             .addOnFailureListener { e ->
                 loadingDialog.dismiss()
-                Toast.makeText(this, "No se pudo iniciar sesión: ${e.message}", Toast.LENGTH_SHORT).show()
+                if (!isOnline()) {
+                    val currentUser = firebaseAuth.currentUser
+                    if (currentUser != null && currentUser.uid.isNotEmpty()) {
+                        verifyUserType(currentUser.uid, loadingDialog)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No se pudo iniciar sesión sin conexión. Verifica tus credenciales.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(this, "No se pudo iniciar sesión: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
     private fun verifyUserType(uid: String, loadingDialog: AlertDialog? = createLoadingDialog()) {
         loadingDialog?.show()
-        FirebaseDatabase.getInstance().getReference("Usuarios").child(uid).get()
+        val dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+        dbRef.get()
             .addOnSuccessListener { snapshot ->
                 loadingDialog?.dismiss()
                 val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
@@ -119,8 +128,33 @@ class LoginPostulanteActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 loadingDialog?.dismiss()
-                firebaseAuth.signOut()
-                Toast.makeText(this, "Error al verificar usuario: ${e.message}", Toast.LENGTH_SHORT).show()
+                if (!isOnline()) {
+                    dbRef.get().addOnSuccessListener { snapshot ->
+                        val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
+                        if (tipoUsuario == "postulante") {
+                            Toast.makeText(this, "Bienvenido(a) (Offline)", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainActivityPostulante::class.java))
+                            finishAffinity()
+                        } else {
+                            firebaseAuth.signOut()
+                            Toast.makeText(
+                                this,
+                                "Usuario no es postulante (Offline).",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }.addOnFailureListener {
+                        firebaseAuth.signOut()
+                        Toast.makeText(
+                            this,
+                            "Error al verificar usuario sin conexión.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    firebaseAuth.signOut()
+                    Toast.makeText(this, "Error al verificar usuario: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
