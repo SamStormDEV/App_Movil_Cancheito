@@ -2,26 +2,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+
     <group
         android:id="@+id/grupo_op"
         android:checkableBehavior="single">
+
         <item
             android:id="@+id/op_inicio_v"
             android:title="@string/menu_inicio"
-            android:icon="@drawable/baseline_home_24"
-            />
+            android:icon="@drawable/baseline_home_24" />
+
         <item
             android:id="@+id/op_contratos_v"
-            android:icon="@drawable/baseline_people_24"
             android:title="@string/menu_contratos"
-            />
-
+            android:icon="@drawable/baseline_people_24" />
     </group>
+
+    <item
+        android:id="@+id/op_publicar_oferta"
+        android:title="@string/menu_publicar_oferta"
+        android:icon="@android:drawable/ic_input_add" />
+
+    <item
+        android:id="@+id/op_mis_ofertas"
+        android:title="@string/menu_mis_ofertas"
+        android:icon="@android:drawable/ic_menu_agenda" />
 
     <item
         android:id="@+id/ap_cerrar_sesion"
         android:title="@string/menu_cerrar_sesion"
-        android:icon="@drawable/icon_cerrar_session"
-        />
-
+        android:icon="@android:drawable/ic_lock_power_off" />
 </menu>
