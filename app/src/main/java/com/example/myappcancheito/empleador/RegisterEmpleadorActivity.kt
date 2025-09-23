@@ -83,6 +83,15 @@ class RegisterEmpleadorActivity : AppCompatActivity() {
                 "email" to email,
                 "tipoUsuario" to "empleador",
                 "usuario_verificado" to false,
+                "ubicacion"          to null,
+                "formacion"          to null,
+                "experiencia"        to null,
+                "fotoPerfilUrl"      to null,
+                "cvUrl"              to null,
+                "nombreComercial"    to null,
+                "rubro"              to null,
+                "descripcion"        to null,
+                "estadoCuenta"       to "Activa",
                 "tiempo_registro" to timestamp
             )
             database.getReference("Usuarios").child(uid).setValue(userData).await()

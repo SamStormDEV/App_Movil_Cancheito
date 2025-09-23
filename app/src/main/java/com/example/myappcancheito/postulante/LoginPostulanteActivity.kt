@@ -252,6 +252,15 @@ class LoginPostulanteActivity : AppCompatActivity() {
             "email" to email,
             "tipoUsuario" to "postulante",
             "usuario_verificado" to false,
+            "ubicacion"          to null,
+            "formacion"          to null,
+            "experiencia"        to null,
+            "fotoPerfilUrl"      to null,
+            "cvUrl"              to null,
+            "nombreComercial"    to null,
+            "rubro"              to null,
+            "descripcion"        to null,
+            "estadoCuenta"       to "Activa",
             "tiempo_registro" to timestamp
         )
         dbRef.setValue(userData)
