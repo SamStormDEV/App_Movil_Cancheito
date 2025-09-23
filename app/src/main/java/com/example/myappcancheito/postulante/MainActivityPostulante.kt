@@ -8,10 +8,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.example.myappcancheito.HeaderLoader
 import com.example.myappcancheito.R
 import com.example.myappcancheito.SelecionarTipoActivity
 import com.example.myappcancheito.databinding.ActivityMainPostulanteBinding
 import com.example.myappcancheito.postulante.Nav_Fragments_Postulante.FragmentInicioP
+import com.example.myappcancheito.postulante.Nav_Fragments_Postulante.FragmentPerfilP
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -40,11 +42,13 @@ class MainActivityPostulante : AppCompatActivity(), NavigationView.OnNavigationI
 
         replaceFragment(FragmentInicioP())
         binding.navigationView.setCheckedItem(R.id.op_inicio_c)
-
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         firebaseAuth = FirebaseAuth.getInstance()
         comprobarSesion()
+
+        // Carga/actualiza el header del NavigationView
+        HeaderLoader.bindHeader(binding.navigationView)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -57,6 +61,8 @@ class MainActivityPostulante : AppCompatActivity(), NavigationView.OnNavigationI
     override fun onStart() {
         super.onStart()
         comprobarSesion()
+        // Refresca por si cambió la info del usuario
+        HeaderLoader.bindHeader(binding.navigationView)
     }
 
     private fun cerrarSesion() {
@@ -83,6 +89,7 @@ class MainActivityPostulante : AppCompatActivity(), NavigationView.OnNavigationI
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.op_inicio_c -> replaceFragment(FragmentInicioP())
+            R.id.op_mi_perfil_c -> replaceFragment(FragmentPerfilP())
             R.id.op_cerrar_sesion_c -> cerrarSesion()
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
