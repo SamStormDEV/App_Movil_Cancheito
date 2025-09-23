@@ -82,6 +82,15 @@ class EmpleadorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: android.view.MenuItem): Boolean {
         when (item.itemId) {
             R.id.op_inicio_v -> replaceFragment(FragmentInicioV())
+
+            // NUEVO: publicar y mis ofertas
+            R.id.op_publicar_oferta -> replaceFragment(
+                com.example.myappcancheito.empleador.ofertas.PublicarOfertaFragment()
+            )
+            R.id.op_mis_ofertas -> replaceFragment(
+                com.example.myappcancheito.empleador.ofertas.MisOfertasFragment()
+            )
+
             R.id.ap_cerrar_sesion -> cerrarSesion()
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
