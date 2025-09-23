@@ -24,6 +24,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import com.example.myappcancheito.R
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class LoginPostulanteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginPostulanteBinding
@@ -51,6 +56,9 @@ class LoginPostulanteActivity : AppCompatActivity() {
         binding.tvIrRegistroPos.setOnClickListener {
             startActivity(Intent(this, RegisterPostulanteActivity::class.java))
         }
+        binding.tvOlvideContrasenaPos.setOnClickListener {
+            showResetPasswordDialog()
+        }
         binding.cardGoogle.setOnClickListener {
             if (::credentialManager.isInitialized) {
                 signInWithGoogle()
@@ -59,6 +67,56 @@ class LoginPostulanteActivity : AppCompatActivity() {
             }
         }
         checkCurrentUser()
+    }
+
+    private fun showResetPasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_input_email_post, null)
+        val etEmail = dialogView.findViewById<TextInputEditText>(R.id.et_email)
+        val btnSend = dialogView.findViewById<MaterialButton>(R.id.btn_send)
+        val btnCancel = dialogView.findViewById<MaterialButton>(R.id.btn_cancel)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+        btnSend.setOnClickListener {
+            val email = etEmail.text.toString().trim()
+            when {
+                email.isEmpty() -> etEmail.error = "Ingrese un correo"
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> etEmail.error = "Correo no válido"
+                else -> {
+                    sendPasswordResetEmail(email, dialog)
+                }
+            }
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+    private fun sendPasswordResetEmail(email: String, dialog: AlertDialog) {
+        if (!isOnline()) {
+            Toast.makeText(this, "Sin conexión a internet", Toast.LENGTH_LONG).show()
+            return
+        }
+        val loadingDialog = createLoadingDialog()
+        loadingDialog.show()
+        firebaseAuth.setLanguageCode("es")
+        firebaseAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                loadingDialog.dismiss()
+                if (task.isSuccessful) {
+                    dialog.dismiss()
+                    Toast.makeText(this, "Enlace de restablecimiento enviado a $email", Toast.LENGTH_LONG).show()
+                } else {
+                    val errorMessage = when (task.exception) {
+                        is FirebaseAuthInvalidUserException -> "No se encontró una cuenta con este correo"
+                        is FirebaseAuthInvalidCredentialsException -> "Correo con formato inválido"
+                        else -> task.exception?.message ?: "Error desconocido"
+                    }
+                    Toast.makeText(this, "Error: $errorMessage", Toast.LENGTH_LONG).show()
+                }
+            }
     }
 
     private fun checkCurrentUser() {
