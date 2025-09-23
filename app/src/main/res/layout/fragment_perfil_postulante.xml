@@ -117,38 +117,51 @@
                     android:text="@string/perfil_correo"
                     android:textSize="16sp"/>
 
-                <EditText
-                    android:id="@+id/etUbicacion"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/perfil_ubicacion_hint"
-                    android:inputType="textCapWords"
-                    android:padding="8dp"
-                    android:minHeight="48dp"
-                    android:autofillHints="postalAddress" />
-
-                <EditText
-                    android:id="@+id/etFormacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/perfil_formacion_hint"
-                    android:inputType="textCapSentences"
-                    android:padding="8dp"
-                    android:minHeight="48dp"
                     android:layout_marginTop="8dp"
-                    android:autofillHints="organization" />
+                    app:startIconDrawable="@drawable/outline_add_location_24">
 
-                <EditText
-                    android:id="@+id/etExperiencia"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/perfil_ubicacion_hint"
+                        android:inputType="textCapWords"
+                        android:autofillHints="postalAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/perfil_experiencia_hint"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:minHeight="48dp"
-                    android:padding="8dp"
                     android:layout_marginTop="8dp"
-                    android:autofillHints="jobTitle" />
+                    app:startIconDrawable="@drawable/outline_auto_stories_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFormacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/perfil_formacion_hint"
+                        android:inputType="textCapSentences"
+                        android:autofillHints="organization"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/outline_add_home_work_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etExperiencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/perfil_experiencia_hint"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:autofillHints="jobTitle"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/tvTipo"

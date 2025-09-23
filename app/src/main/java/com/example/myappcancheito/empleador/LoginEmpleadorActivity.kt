@@ -74,11 +74,17 @@ class LoginEmpleadorActivity : AppCompatActivity() {
                     .addOnSuccessListener { snapshot ->
                         loadingDialog.dismiss()
                         val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
+                        val estadoCuenta = snapshot.child("estadoCuenta").value?.toString()
 
                         if (tipoUsuario == "empleador") {
-                            Toast.makeText(this, "Bienvenido(a)", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, EmpleadorActivity::class.java))
-                            finishAffinity()
+                            if (estadoCuenta == "Activa") {
+                                Toast.makeText(this, "Bienvenido(a)", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this, EmpleadorActivity::class.java))
+                                finishAffinity()
+                            } else {
+                                firebaseAuth.signOut()
+                                Toast.makeText(this, "Cuenta suspendida", Toast.LENGTH_LONG).show()
+                            }
                         } else {
                             firebaseAuth.signOut()
                             Toast.makeText(
