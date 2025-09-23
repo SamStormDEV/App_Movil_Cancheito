@@ -2,6 +2,7 @@ package com.example.myappcancheito.empleador.ofertas
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myappcancheito.R
@@ -15,16 +16,18 @@ class MisOfertasFragment : Fragment(R.layout.fragment_mis_ofertas) {
     private val binding get() = _binding!!
 
     private val auth by lazy { FirebaseAuth.getInstance() }
-    private val db by lazy { FirebaseDatabase.getInstance().reference }
+    private val rootDb by lazy { FirebaseDatabase.getInstance().reference }
+
     private lateinit var adapter: MisOfertasAdapter
-    private var listener: ValueEventListener? = null
+    private var ofertasRef: DatabaseReference? = null
+    private var ofertasListener: ValueEventListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMisOfertasBinding.bind(view)
 
         adapter = MisOfertasAdapter(mutableListOf()) { offer ->
-            // Abre detalle
+            // Abre detalle (si tu detalle necesita el uid del empleador, pásalo también)
             val f = DetalleOfertaFragment.newInstance(offer.id)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.navFragment, f)
@@ -32,32 +35,58 @@ class MisOfertasFragment : Fragment(R.layout.fragment_mis_ofertas) {
                 .commit()
         }
 
-        binding.rvOfertas.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvOfertas.adapter = adapter
+        binding.rvOfertas.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@MisOfertasFragment.adapter
+            setHasFixedSize(true)
+        }
 
-        cargar()
+        cargarOfertas()
     }
 
-    private fun cargar() {
-        val uid = auth.currentUser?.uid ?: return
-        val ref = db.child("ofertas").child(uid)
-        listener = ref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(s: DataSnapshot) {
-                val items = s.children.mapNotNull { it.getValue(Offer::class.java) }
-                    .filter { it.estado == "ACTIVA" }
-                    .sortedByDescending { it.createdAt }
+    private fun cargarOfertas() {
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            Toast.makeText(requireContext(), "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // opcional: muestra loader si tienes uno en el layout
+        binding.progressBar?.visibility = View.VISIBLE
+        binding.emptyView?.visibility = View.GONE
+
+        // Guardamos ref para poder remover el listener luego
+        ofertasRef = rootDb.child("ofertas").child(uid)
+        ofertasListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val items = snapshot.children
+                    .mapNotNull { it.getValue(Offer::class.java) }
+                    .filter { it.estado.equals("ACTIVA", ignoreCase = true) } // o muestra todas si prefieres
+                    .sortedByDescending { it.createdAt ?: 0L }
+
                 adapter.setItems(items)
+                // empty state
+                binding.emptyView?.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
+                binding.progressBar?.visibility = View.GONE
             }
-            override fun onCancelled(e: DatabaseError) {}
-        })
+
+            override fun onCancelled(error: DatabaseError) {
+                binding.progressBar?.visibility = View.GONE
+                Toast.makeText(requireContext(), "Error: ${error.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        ofertasRef!!.addValueEventListener(ofertasListener as ValueEventListener)
     }
 
     override fun onDestroyView() {
-        listener?.let {
-            auth.currentUser?.uid?.let { uid ->
-                db.child("ofertas").child(uid).removeEventListener(it)
-            }
+        // Limpia el listener si existe y la ref está inicializada
+        ofertasListener?.let { listener ->
+            ofertasRef?.removeEventListener(listener)
         }
+        ofertasListener = null
+        ofertasRef = null
+
         _binding = null
         super.onDestroyView()
     }

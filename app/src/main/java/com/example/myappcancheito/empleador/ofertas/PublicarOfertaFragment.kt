@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myappcancheito.R
 import com.example.myappcancheito.databinding.FragmentPublicarOfertaBinding
+import com.example.myappcancheito.empleador.model.EmpleadorProfile
+import com.example.myappcancheito.empleador.model.toInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.UUID
@@ -31,6 +33,15 @@ class PublicarOfertaFragment : Fragment(R.layout.fragment_publicar_oferta) {
         binding.btnPublicar.setOnClickListener { publicar() }
     }
 
+    /** === Helpers de validación === **/
+    private fun perfilIncompleto(p: EmpleadorProfile?): Boolean {
+        return p == null ||
+                p.nombreComercial.isNullOrBlank() ||
+                p.rubro.isNullOrBlank() ||
+                p.descripcion.isNullOrBlank() ||
+                p.ubicacion.isNullOrBlank()
+    }
+
     private fun publicar() {
         val cargo = binding.etCargo.text?.toString()?.trim().orEmpty()
         val descripcion = binding.etDescripcion.text?.toString()?.trim().orEmpty()
@@ -49,26 +60,54 @@ class PublicarOfertaFragment : Fragment(R.layout.fragment_publicar_oferta) {
             return
         }
 
-        val id = UUID.randomUUID().toString()
-        val offer = Offer(
-            id = id,
-            employerId = uid,
-            cargo = cargo,
-            descripcion = descripcion,
-            modalidad = modalidad,
-            ubicacion = ubicacion,
-            estado = "ACTIVA"
-        )
+        // (Opcional) deshabilitar botón / mostrar loader si tienes uno
+        binding.btnPublicar.isEnabled = false
 
-        db.child("ofertas").child(uid).child(id)
-            .setValue(offer)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Oferta publicada", Toast.LENGTH_SHORT).show()
-                // Opcional: volver o ir a Mis Ofertas
-                // parentFragmentManager.popBackStack()
+        // 1) Cargar perfil de empleador
+        db.child("empleadores").child(uid).get()
+            .addOnSuccessListener { snap ->
+                val perfil = snap.getValue(EmpleadorProfile::class.java)
+
+                // 2) Validar perfil completo
+                if (perfilIncompleto(perfil)) {
+                    binding.btnPublicar.isEnabled = true
+                    Toast.makeText(
+                        requireContext(),
+                        "Completa tu perfil (nombre comercial, rubro, descripción y ubicación) antes de publicar.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@addOnSuccessListener
+                }
+
+                // 3) Crear oferta con snapshot del empleador
+                val id = UUID.randomUUID().toString()
+                val offer = Offer(
+                    id = id,
+                    employerId = uid,
+                    cargo = cargo,
+                    descripcion = descripcion,
+                    modalidad = modalidad,
+                    ubicacion = ubicacion,
+                    estado = "ACTIVA",
+                    empleadorInfo = perfil!!.toInfo()
+                )
+
+                // 4) Guardar (mantengo tu estructura /ofertas/{uid}/{id})
+                db.child("ofertas").child(uid).child(id)
+                    .setValue(offer)
+                    .addOnSuccessListener {
+                        binding.btnPublicar.isEnabled = true
+                        Toast.makeText(requireContext(), "Oferta publicada", Toast.LENGTH_SHORT).show()
+                        // parentFragmentManager.popBackStack() // si quieres volver
+                    }
+                    .addOnFailureListener {
+                        binding.btnPublicar.isEnabled = true
+                        Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_LONG).show()
+                    }
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_LONG).show()
+                binding.btnPublicar.isEnabled = true
+                Toast.makeText(requireContext(), "No se pudo leer tu perfil: ${it.message}", Toast.LENGTH_LONG).show()
             }
     }
 

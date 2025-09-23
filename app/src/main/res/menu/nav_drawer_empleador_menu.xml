@@ -16,6 +16,11 @@
             android:id="@+id/op_contratos_v"
             android:title="@string/menu_contratos"
             android:icon="@drawable/baseline_people_24" />
+        <item
+            android:id="@+id/op_perfil"
+            android:title="@string/perfil_empleador"
+            android:icon="@drawable/baseline_people_24" />
+
     </group>
 
     <item
