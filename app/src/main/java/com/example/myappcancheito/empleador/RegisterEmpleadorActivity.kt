@@ -97,7 +97,9 @@ class RegisterEmpleadorActivity : AppCompatActivity() {
             database.getReference("Usuarios").child(uid).setValue(userData).await()
             withContext(Dispatchers.Main) {
                 showToast("Registro exitoso")
-                startActivity(Intent(this@RegisterEmpleadorActivity, EmpleadorActivity::class.java))
+                val intent = Intent(this@RegisterEmpleadorActivity, EmpleadorActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
         } catch (e: Exception) {

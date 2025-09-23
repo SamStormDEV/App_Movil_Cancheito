@@ -133,10 +133,17 @@ class LoginPostulanteActivity : AppCompatActivity() {
             .addOnSuccessListener { snapshot ->
                 loadingDialog?.dismiss()
                 val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
+                val estadoCuenta = snapshot.child("estadoCuenta").value?.toString()
+
                 if (tipoUsuario == "postulante") {
-                    Toast.makeText(this, "Bienvenido(a)", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivityPostulante::class.java))
-                    finishAffinity()
+                    if (estadoCuenta == "Activa") {
+                        Toast.makeText(this, "Bienvenido(a)", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainActivityPostulante::class.java))
+                        finishAffinity()
+                    } else {
+                        firebaseAuth.signOut()
+                        Toast.makeText(this, "Cuenta suspendida", Toast.LENGTH_LONG).show()
+                    }
                 } else {
                     firebaseAuth.signOut()
                     Toast.makeText(
@@ -151,10 +158,16 @@ class LoginPostulanteActivity : AppCompatActivity() {
                 if (!isOnline()) {
                     dbRef.get().addOnSuccessListener { snapshot ->
                         val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
+                        val estadoCuenta = snapshot.child("estadoCuenta").value?.toString()
                         if (tipoUsuario == "postulante") {
-                            Toast.makeText(this, "Bienvenido(a) (Offline)", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, MainActivityPostulante::class.java))
-                            finishAffinity()
+                            if (estadoCuenta == "Activa") {
+                                Toast.makeText(this, "Bienvenido(a) (Offline)", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this, MainActivityPostulante::class.java))
+                                finishAffinity()
+                            } else {
+                                firebaseAuth.signOut()
+                                Toast.makeText(this, "Cuenta suspendida (Offline)", Toast.LENGTH_LONG).show()
+                            }
                         } else {
                             firebaseAuth.signOut()
                             Toast.makeText(
@@ -252,15 +265,15 @@ class LoginPostulanteActivity : AppCompatActivity() {
             "email" to email,
             "tipoUsuario" to "postulante",
             "usuario_verificado" to false,
-            "ubicacion"          to null,
-            "formacion"          to null,
-            "experiencia"        to null,
-            "fotoPerfilUrl"      to null,
-            "cvUrl"              to null,
-            "nombreComercial"    to null,
-            "rubro"              to null,
-            "descripcion"        to null,
-            "estadoCuenta"       to "Activa",
+            "ubicacion" to null,
+            "formacion" to null,
+            "experiencia" to null,
+            "fotoPerfilUrl" to null,
+            "cvUrl" to null,
+            "nombreComercial" to null,
+            "rubro" to null,
+            "descripcion" to null,
+            "estadoCuenta" to "Activa",
             "tiempo_registro" to timestamp
         )
         dbRef.setValue(userData)

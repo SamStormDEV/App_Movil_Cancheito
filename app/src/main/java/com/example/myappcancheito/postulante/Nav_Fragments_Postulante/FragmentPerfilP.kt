@@ -1,5 +1,8 @@
 package com.example.myappcancheito.postulante.Nav_Fragments_Postulante
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -33,6 +36,10 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@registerForActivityResult
+            }
             selectedImageUri = uri
             removePhoto = false
             binding.ivFoto.load(uri)
@@ -41,6 +48,10 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
 
     private val pickPdfLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@registerForActivityResult
+            }
             selectedPdfUri = uri
             removeCv = false
             binding.tvCvActual.text = "CV seleccionado: ${uri.lastPathSegment ?: "archivo.pdf"}"
@@ -53,22 +64,78 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
         binding.progress.visibility = View.VISIBLE
         cargarPerfil()
 
-        binding.btnSeleccionarFoto.setOnClickListener { pickImageLauncher.launch("image/*") }
+        binding.btnSeleccionarFoto.setOnClickListener {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            pickImageLauncher.launch("image/*")
+        }
+
         binding.btnQuitarFoto.setOnClickListener {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             selectedImageUri = null
             removePhoto = true
             binding.ivFoto.setImageResource(R.mipmap.ic_launcher_round)
+            actualizarFotoPerfilNull()
         }
 
-        binding.btnSeleccionarCv.setOnClickListener { pickPdfLauncher.launch("application/pdf") }
+        binding.btnSeleccionarCv.setOnClickListener {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            pickPdfLauncher.launch("application/pdf")
+        }
+
         binding.btnQuitarCv.setOnClickListener {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             selectedPdfUri = null
             removeCv = true
             binding.tvCvActual.text = getString(R.string.perfil_cv)
             guardarCambios()
         }
 
-        binding.btnGuardar.setOnClickListener { guardarCambios() }
+        binding.btnGuardar.setOnClickListener {
+            if (!isInternetAvailable()) {
+                Toast.makeText(requireContext(), "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            guardarCambios()
+        }
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun actualizarFotoPerfilNull() {
+        val user = FirebaseAuth.getInstance().currentUser ?: run {
+            Toast.makeText(requireContext(), "Inicia sesión", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.uid)
+                ref.updateChildren(mapOf("fotoPerfilUrl" to null)).await()
+                if (_binding == null) return@launch
+                Toast.makeText(requireContext(), "Foto de perfil eliminada", Toast.LENGTH_SHORT).show()
+                cargarPerfil()
+            } catch (e: Exception) {
+                if (_binding == null) return@launch
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun cargarPerfil() {

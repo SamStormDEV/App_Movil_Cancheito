@@ -6,9 +6,6 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.myappcancheito.R
 import com.example.myappcancheito.databinding.ActivityRegisterPostulanteBinding
 import com.example.myappcancheito.Constantes
 import com.google.firebase.auth.FirebaseAuth
@@ -57,7 +54,9 @@ class RegisterPostulanteActivity : AppCompatActivity() {
                 loadingDialog.dismiss()
                 val tipoUsuario = snapshot.child("tipoUsuario").value?.toString()
                 if (tipoUsuario == "postulante") {
-                    startActivity(Intent(this, MainActivityPostulante::class.java))
+                    val intent = Intent(this, MainActivityPostulante::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                     finish()
                 } else {
                     firebaseAuth.signOut()
@@ -136,7 +135,9 @@ class RegisterPostulanteActivity : AppCompatActivity() {
             database.getReference("Usuarios").child(uid).setValue(userData).await()
             withContext(Dispatchers.Main) {
                 showToast("Registro exitoso")
-                startActivity(Intent(this@RegisterPostulanteActivity, MainActivityPostulante::class.java))
+                val intent = Intent(this@RegisterPostulanteActivity, MainActivityPostulante::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
         } catch (e: Exception) {
