@@ -8,10 +8,11 @@ data class PostulanteProfile(
     var nombre_completo: String? = null,
     var email: String? = null,
     var tipoUsuario: String? = null,
-    var tiempo_registro: Any? = null, // Long (millis) o String
+    var tiempo_registro: Any? = null,
     var ubicacion: String? = null,
     var formacion: String? = null,
     var experiencia: String? = null,
     var fotoPerfilUrl: String? = null,
-    var cvUrl: String? = null
+    var cvUrl: String? = null,
+    var usuario_verificado: Boolean? = null
 )

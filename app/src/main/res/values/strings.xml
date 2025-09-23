@@ -57,4 +57,22 @@
     <string name="menu_publicar_oferta">Publicar oferta</string>
     <string name="menu_mis_ofertas">Mis ofertas</string>
 
+    <!-- Perfil general -->
+    <string name="perfil_titulo">Mi Perfil Postulante</string>
+    <string name="perfil_no_verificado">No verificado. Complete sus datos.</string>
+    <string name="perfil_foto_desc">Foto de perfil</string>
+    <string name="perfil_cambiar_foto">Cambiar foto</string>
+    <string name="perfil_quitar_foto">Quitar foto</string>
+    <string name="perfil_nombre">Nombre: -</string>
+    <string name="perfil_correo">Correo: -</string>
+    <string name="perfil_ubicacion_hint">Ubicación (ciudad, país)</string>
+    <string name="perfil_formacion_hint">Formación (p. ej., Ing. Sistemas)</string>
+    <string name="perfil_experiencia_hint">Experiencia (resumen)</string>
+    <string name="perfil_tipo">Tipo: -</string>
+    <string name="perfil_registro">Registrado: -</string>
+    <string name="perfil_cv">CV: (ninguno)</string>
+    <string name="perfil_seleccionar_cv">Seleccionar CV (PDF)</string>
+    <string name="perfil_quitar_cv">Quitar CV</string>
+    <string name="perfil_guardar">Guardar cambios</string>
+
 </resources>
