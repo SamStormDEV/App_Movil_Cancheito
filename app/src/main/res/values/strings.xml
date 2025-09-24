@@ -75,4 +75,9 @@
     <string name="perfil_quitar_cv">Quitar CV</string>
     <string name="perfil_guardar">Guardar cambios</string>
 
+    <!-- Perfil Empleador -->
+    <string name="menu_mi_perfil">Mi Perfil</string>
+    <string name="perfil_descripcion_hint">Descripción de la empresa</string>
+    <string name="perfil_sitio_web_hint">Sitio web</string>
+
 </resources>

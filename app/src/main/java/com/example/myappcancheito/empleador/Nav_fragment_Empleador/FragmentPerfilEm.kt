@@ -1,4 +1,4 @@
-package com.example.myappcancheito.postulante.Nav_Fragments_Postulante
+package com.example.myappcancheito.empleador.Nav_fragment_Empleador
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.myappcancheito.R
-import com.example.myappcancheito.databinding.FragmentPerfilPostulanteBinding
+import com.example.myappcancheito.databinding.FragmentPerfilEmBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -24,9 +24,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
+class FragmentPerfilEm : Fragment(R.layout.fragment_perfil_em) {
 
-    private var _binding: FragmentPerfilPostulanteBinding? = null
+    private var _binding: FragmentPerfilEmBinding? = null
     private val binding get() = _binding!!
 
     private var selectedImageUri: Uri? = null
@@ -60,7 +60,7 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentPerfilPostulanteBinding.bind(view)
+        _binding = FragmentPerfilEmBinding.bind(view)
         binding.progress.visibility = View.VISIBLE
         cargarPerfil()
 
@@ -150,13 +150,17 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
             if (_binding == null) return@addOnSuccessListener
             binding.progress.visibility = View.GONE
             if (!snapshot.exists()) {
-                binding.tvNombre.setText(user.displayName ?: "")
-                binding.tvEmail.setText(user.email ?: "")
-                binding.tvTipo.setText("")
-                binding.tvRegistro.setText("")
+                binding.etNombreCompleto.setText(user.displayName ?: "")
+                binding.etEmail.setText(user.email ?: "")
+                binding.etTipo.setText("")
+                binding.etRegistro.setText("")
                 binding.etUbicacion.setText("")
+                binding.etNombreComercial.setText("")
+                binding.etRubro.setText("")
                 binding.etFormacion.setText("")
                 binding.etExperiencia.setText("")
+                binding.etDescripcion.setText("")
+                binding.etSitioWeb.setText("")
                 binding.ivFoto.setImageResource(R.mipmap.ic_launcher_round)
                 binding.tvCvActual.text = getString(R.string.perfil_cv)
                 binding.tvNoVerificado.visibility = View.VISIBLE
@@ -165,16 +169,20 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
                 return@addOnSuccessListener
             }
 
-            val perfil = snapshot.getValue(PostulanteProfile::class.java)
-            binding.tvNombre.setText(perfil?.nombre_completo ?: "")
-            binding.tvEmail.setText(perfil?.email ?: "")
-            binding.tvTipo.setText(perfil?.tipoUsuario ?: "")
-            binding.tvRegistro.setText(formatearTiempo(perfil?.tiempo_registro) ?: "")
+            val perfil = snapshot.getValue(EmpleadorProfile::class.java)
+            binding.etNombreCompleto.setText(perfil?.nombre_completo ?: "")
+            binding.etEmail.setText(perfil?.email ?: "")
+            binding.etTipo.setText(perfil?.tipoUsuario ?: "")
+            binding.etRegistro.setText(formatearTiempo(perfil?.tiempo_registro) ?: "")
             binding.etUbicacion.setText(perfil?.ubicacion ?: "")
+            binding.etNombreComercial.setText(perfil?.nombreComercial ?: "")
+            binding.etRubro.setText(perfil?.rubro ?: "")
             binding.etFormacion.setText(perfil?.formacion ?: "")
             binding.etExperiencia.setText(perfil?.experiencia ?: "")
+            binding.etDescripcion.setText(perfil?.descripcion ?: "")
+            binding.etSitioWeb.setText(perfil?.sitioWeb ?: "")
             perfil?.fotoPerfilUrl?.let { binding.ivFoto.load(it) } ?: binding.ivFoto.setImageResource(R.mipmap.ic_launcher_round)
-            binding.tvCvActual.text = if (perfil?.cvUrl != null) "CV: disponible" else getString(R.string.perfil_cv)
+            binding.tvCvActual.text = if (perfil?.cvUrl != null) "Documento: disponible" else getString(R.string.perfil_cv)
             binding.tvNoVerificado.visibility = if (perfil?.usuario_verificado == true) View.GONE else View.VISIBLE
             removePhoto = false
             removeCv = false
@@ -191,9 +199,14 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
             return
         }
 
+        val nombreCompleto = binding.etNombreCompleto.text.toString().trim()
         val ubicacion = binding.etUbicacion.text.toString().trim()
+        val nombreComercial = binding.etNombreComercial.text.toString().trim()
+        val rubro = binding.etRubro.text.toString().trim()
         val formacion = binding.etFormacion.text.toString().trim()
         val experiencia = binding.etExperiencia.text.toString().trim()
+        val descripcion = binding.etDescripcion.text.toString().trim()
+        val sitioWeb = binding.etSitioWeb.text.toString().trim()
 
         binding.progress.visibility = View.VISIBLE
         binding.btnGuardar.isEnabled = false
@@ -212,7 +225,7 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
                     }
 
                     if (selectedPdfUri != null) {
-                        val cvRef = storage.child("perfiles/${user.uid}/cv_${System.currentTimeMillis()}.pdf")
+                        val cvRef = storage.child("perfiles/${user.uid}/doc_${System.currentTimeMillis()}.pdf")
                         cvRef.putFile(selectedPdfUri!!).await()
                         cvUrlSubido = cvRef.downloadUrl.await().toString()
                     }
@@ -220,13 +233,16 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
 
                 val ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.uid)
                 val snapshot = ref.get().await()
-                val nombre = binding.tvNombre.text.toString().trim()
 
                 val updates = mutableMapOf<String, Any?>(
-                    "nombre_completo" to (if (nombre.isBlank()) null else nombre),
+                    "nombre_completo" to (if (nombreCompleto.isBlank()) null else nombreCompleto),
                     "ubicacion" to (if (ubicacion.isBlank()) null else ubicacion),
+                    "nombreComercial" to (if (nombreComercial.isBlank()) null else nombreComercial),
+                    "rubro" to (if (rubro.isBlank()) null else rubro),
                     "formacion" to (if (formacion.isBlank()) null else formacion),
-                    "experiencia" to (if (experiencia.isBlank()) null else experiencia)
+                    "experiencia" to (if (experiencia.isBlank()) null else experiencia),
+                    "descripcion" to (if (descripcion.isBlank()) null else descripcion),
+                    "sitioWeb" to (if (sitioWeb.isBlank()) null else sitioWeb)
                 )
 
                 if (fotoUrlSubida != null) updates["fotoPerfilUrl"] = fotoUrlSubida
@@ -236,15 +252,19 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
                 else if (removeCv) updates["cvUrl"] = null
 
                 if (!snapshot.exists()) {
-                    val nuevo = PostulanteProfile(
+                    val nuevo = EmpleadorProfile(
                         uid = user.uid,
                         nombre_completo = updates["nombre_completo"] as String?,
                         email = user.email,
-                        tipoUsuario = "postulante",
+                        tipoUsuario = "empleador",
                         tiempo_registro = System.currentTimeMillis(),
                         ubicacion = updates["ubicacion"] as String?,
+                        nombreComercial = updates["nombreComercial"] as String?,
+                        rubro = updates["rubro"] as String?,
                         formacion = updates["formacion"] as String?,
                         experiencia = updates["experiencia"] as String?,
+                        descripcion = updates["descripcion"] as String?,
+                        sitioWeb = updates["sitioWeb"] as String?,
                         fotoPerfilUrl = updates["fotoPerfilUrl"] as String?,
                         cvUrl = updates["cvUrl"] as String?,
                         usuario_verificado = false
@@ -267,7 +287,7 @@ class FragmentPerfilP : Fragment(R.layout.fragment_perfil_postulante) {
                 if (_binding == null) return@launch
                 binding.progress.visibility = View.GONE
                 binding.btnGuardar.isEnabled = true
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
