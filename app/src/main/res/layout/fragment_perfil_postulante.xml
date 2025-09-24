@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mi Perfil"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp" />
+
+        <!-- FOTO -->
+        <ImageView
+            android:id="@+id/ivFoto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Foto de perfil"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start"
+            android:paddingBottom="12dp">
+
+            <Button
+                android:id="@+id/btnSeleccionarFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cambiar foto" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnQuitarFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quitar foto" />
+        </LinearLayout>
+
+        <!-- CAMPOS EDITABLES -->
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre: -"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correo: -"
+            android:textSize="16sp"/>
+
+
+        <!-- CAMPOS EDITABLES NUEVOS -->
+        <EditText
+            android:id="@+id/etUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ubicación (ciudad, país)"
+            android:inputType="textCapWords"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/etFormacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Formación (p. ej., Ing. Sistemas)"
+            android:inputType="textCapSentences"
+            android:padding="8dp"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etExperiencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Experiencia (resumen)"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:padding="8dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvTipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo: -"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrado: -"
+            android:textSize="16sp"
+            android:paddingBottom="12dp" />
+        <!-- CV -->
+        <TextView
+            android:id="@+id/tvCvActual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CV: (ninguno)"
+            android:layout_marginTop="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="6dp">
+
+            <Button
+                android:id="@+id/btnSeleccionarCv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar CV (PDF)" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnQuitarCv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quitar CV" />
+        </LinearLayout>
+
+        <!-- GUARDAR -->
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar cambios" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

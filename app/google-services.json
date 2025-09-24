@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "451600479024",
+    "firebase_url": "https://cancheito-75c44-default-rtdb.firebaseio.com",
+    "project_id": "cancheito-75c44",
+    "storage_bucket": "cancheito-75c44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451600479024:android:52d7b17a2ff48e1927cef5",
+        "android_client_info": {
+          "package_name": "com.example.myappcancheito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451600479024-sd505jhphnif5bbhararen5sdgf77v3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myappcancheito",
+            "certificate_hash": "0f945a0c7226983b7fbf7e45e15195554ccf9b14"
+          }
+        },
+        {
+          "client_id": "451600479024-3mc12eoo0i78bneb662fnduq8a5t6m4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkyKCAqXVYuaHlmH1MmYmm-LXKRbQzL5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451600479024-3mc12eoo0i78bneb662fnduq8a5t6m4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
