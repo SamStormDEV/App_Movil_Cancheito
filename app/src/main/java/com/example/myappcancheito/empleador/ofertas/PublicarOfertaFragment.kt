@@ -36,16 +36,18 @@ class PublicarOfertaFragment : Fragment(R.layout.fragment_publicar_oferta) {
         val descripcion = binding.etDescripcion.text?.toString()?.trim().orEmpty()
         val modalidad = binding.actvModalidad.text?.toString()?.trim().orEmpty()
         val ubicacion = binding.etUbicacion.text?.toString()?.trim().orEmpty()
+        val pago_aprox = binding.etPagoAprox.text?.toString()?.trim().orEmpty()
 
         var ok = true
-        if (cargo.isEmpty()) { binding.tilCargo.error = "Requerido"; ok = false } else binding.tilCargo.error = null
-        if (descripcion.isEmpty()) { binding.tilDescripcion.error = "Requerido"; ok = false } else binding.tilDescripcion.error = null
-        if (modalidad.isEmpty()) { binding.tilModalidad.error = "Requerido"; ok = false } else binding.tilModalidad.error = null
-        if (ubicacion.isEmpty()) { binding.tilUbicacion.error = "Requerido"; ok = false } else binding.tilUbicacion.error = null
+        if (cargo.isEmpty()) { binding.tilCargo.error = getString(R.string.error_requerido); ok = false } else binding.tilCargo.error = null
+        if (descripcion.isEmpty()) { binding.tilDescripcion.error = getString(R.string.error_requerido); ok = false } else binding.tilDescripcion.error = null
+        if (modalidad.isEmpty()) { binding.tilModalidad.error = getString(R.string.error_requerido); ok = false } else binding.tilModalidad.error = null
+        if (ubicacion.isEmpty()) { binding.tilUbicacion.error = getString(R.string.error_requerido); ok = false } else binding.tilUbicacion.error = null
+        if (pago_aprox.isEmpty()) { binding.tilPagoAprox.error = getString(R.string.error_requerido); ok = false } else binding.tilPagoAprox.error = null
         if (!ok) return
 
         val uid = auth.currentUser?.uid ?: run {
-            Toast.makeText(requireContext(), "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_sesion), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -57,18 +59,17 @@ class PublicarOfertaFragment : Fragment(R.layout.fragment_publicar_oferta) {
             descripcion = descripcion,
             modalidad = modalidad,
             ubicacion = ubicacion,
-            estado = "ACTIVA"
+            estado = "ACTIVA",
+            pago_aprox = pago_aprox,
+            createdAt = System.currentTimeMillis()
         )
 
-        db.child("ofertas").child(uid).child(id)
-            .setValue(offer)
+        db.child("ofertas").child(id).setValue(offer)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Oferta publicada", Toast.LENGTH_SHORT).show()
-                // Opcional: volver o ir a Mis Ofertas
-                // parentFragmentManager.popBackStack()
+                Toast.makeText(requireContext(), getString(R.string.toast_publicada), Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.toast_error, it.message), Toast.LENGTH_LONG).show()
             }
     }
 
