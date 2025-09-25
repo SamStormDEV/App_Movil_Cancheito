@@ -17,7 +17,7 @@
         <activity
             android:name=".SelecionarTipoActivity"
             android:exported="false"
-            android:theme="@style/Theme.Myappcancheito.NoActionBar"/>
+            android:theme="@style/Theme.Myappcancheito"/>
         <activity
             android:name=".postulante.LoginPostulanteActivity"
             android:exported="false"

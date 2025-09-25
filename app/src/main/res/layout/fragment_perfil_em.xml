@@ -107,34 +107,30 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/perfil_nombre"
-                    app:startIconDrawable="@drawable/outline_auto_stories_24">
+                    app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvNombre"
+                        android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:enabled="true"
-                        android:focusable="true"/>
-
+                        android:hint="@string/perfil_correo"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textEmailAddress"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/perfil_correo"
-                    app:startIconDrawable="@drawable/baseline_alternate_email_24">
+                    app:startIconDrawable="@drawable/outline_auto_stories_24">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvEmail"
+                        android:id="@+id/etNombreCompleto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:inputType="textEmailAddress"/>
+                        android:hint="Nombre completo"
+                        android:inputType="textPersonName"
+                        android:autofillHints="name"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -156,14 +152,74 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:startIconDrawable="@drawable/outline_auto_stories_24">
+                    app:startIconDrawable="@drawable/outline_domain_add_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNombreComercial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre comercial"
+                        android:inputType="textCapWords"
+                        android:autofillHints="organizationName"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/outline_engineering_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRubro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Rubro"
+                        android:inputType="textCapWords"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/outline_contacts_product_24">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etFormacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/perfil_formacion_hint"
-                        android:inputType="textCapSentences"
+                        android:hint="Formación"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/outline_approval_delegation_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etExperiencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Experiencia"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/outline_auto_stories_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDescripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/perfil_descripcion_hint"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
                         android:autofillHints="organization"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,48 +227,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:startIconDrawable="@drawable/outline_add_home_work_24">
+                    app:startIconDrawable="@drawable/outline_bring_your_own_ip_24">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etExperiencia"
+                        android:id="@+id/etSitioWeb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/perfil_experiencia_hint"
-                        android:inputType="textMultiLine"
-                        android:minLines="3"
-                        android:autofillHints="jobTitle"/>
+                        android:hint="@string/perfil_sitio_web_hint"
+                        android:inputType="textUri"
+                        android:autofillHints="url"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:paddingTop="8dp"
                     android:hint="@string/perfil_tipo"
-                    app:startIconDrawable="@drawable/outline_admin_panel_settings_24">
+                    app:startIconDrawable="@drawable/outline_admin_panel_settings_24"
+                    app:hintEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvTipo"
+                        android:id="@+id/etTipo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:focusable="false"
-                        android:inputType="text"/>
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="@string/perfil_registro"
-                    app:startIconDrawable="@drawable/outline_calendar_check_24">
+                    app:startIconDrawable="@drawable/outline_calendar_check_24"
+                    app:hintEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvRegistro"
+                        android:id="@+id/etRegistro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:focusable="false"
-                        android:inputType="text"/>
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
