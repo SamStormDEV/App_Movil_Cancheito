@@ -15,12 +15,16 @@
             android:id="@+id/tilCargo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/outline_emoji_people_24"
+            app:startIconContentDescription="@string/hint_cargo">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCargo"
-                android:hint="Cargo*"
+                android:hint="@string/hint_cargo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_cargo"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -28,29 +32,37 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            app:startIconDrawable="@drawable/outline_drafts_24"
+            app:startIconContentDescription="@string/hint_descripcion">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDescripcion"
-                android:hint="Descripción*"
+                android:hint="@string/hint_descripcion"
                 android:minLines="4"
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_descripcion" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilModalidad"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             app:endIconMode="dropdown_menu"
+            app:endIconDrawable="@drawable/outline_connect_without_contact_24"
+            app:endIconContentDescription="@string/hint_modalidad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
+
             <AutoCompleteTextView
                 android:id="@+id/actvModalidad"
-                android:hint="Modalidad* (Presencial/Híbrido/Remoto)"
+                android:hint="@string/hint_modalidad"
                 android:inputType="none"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_modalidad"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,19 +70,45 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            app:startIconDrawable="@drawable/outline_file_map_24"
+            app:startIconContentDescription="@string/hint_ubicacion">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUbicacion"
-                android:hint="Ubicación*"
+                android:hint="@string/hint_ubicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_ubicacion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPagoAprox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconDrawable="@drawable/outline_attach_money_24"
+            app:startIconContentDescription="@string/hint_pago_aprox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPagoAprox"
+                android:hint="@string/hint_pago_aprox"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_pago_aprox" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPublicar"
-            android:text="Publicar oferta"
+            android:text="@string/btn_publicar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            android:contentDescription="@string/btn_publicar"/>
+
     </LinearLayout>
 </ScrollView>

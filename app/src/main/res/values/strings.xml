@@ -80,4 +80,15 @@
     <string name="perfil_descripcion_hint">Descripción de la empresa</string>
     <string name="perfil_sitio_web_hint">Sitio web</string>
 
+    <string name="hint_cargo">Cargo*</string>
+    <string name="hint_descripcion">Descripción*</string>
+    <string name="hint_modalidad">Modalidad* (Presencial/Híbrido/Remoto)</string>
+    <string name="hint_ubicacion">Ubicación*</string>
+    <string name="btn_publicar">Publicar oferta</string>
+    <string name="error_requerido">Requerido</string>
+    <string name="toast_sesion">Debes iniciar sesión</string>
+    <string name="toast_publicada">Oferta publicada</string>
+    <string name="toast_error">Error: %s</string>
+    <string name="hint_pago_aprox">Pago aproximado (opcional)</string>
+
 </resources>
