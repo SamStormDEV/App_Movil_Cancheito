@@ -26,11 +26,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class MainActivityPostulante : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainPostulanteBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +59,31 @@ class MainActivityPostulante : AppCompatActivity(), NavigationView.OnNavigationI
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
         comprobarSesion()
         cargarHeader()
+        checkAccountStatus()
+    }
+
+    private fun checkAccountStatus() {
+        val uid = firebaseAuth.currentUser?.uid ?: return
+        val userRef = database.getReference("Usuarios").child(uid)
+        userRef.child("estadoCuenta").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val estadoCuenta = snapshot.value?.toString()
+                if (estadoCuenta != "Activa") {
+                    firebaseAuth.signOut()
+                    val intent = Intent(this@MainActivityPostulante, SelecionarTipoActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    Toast.makeText(this@MainActivityPostulante, "Tu cuenta está suspendida", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MainActivityPostulante, "Error al verificar estado: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun replaceFragment(fragment: Fragment) {
