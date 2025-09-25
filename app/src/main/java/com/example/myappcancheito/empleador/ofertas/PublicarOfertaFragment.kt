@@ -67,11 +67,18 @@ class PublicarOfertaFragment : Fragment(R.layout.fragment_publicar_oferta) {
         db.child("ofertas").child(id).setValue(offer)
             .addOnSuccessListener {
                 Toast.makeText(requireContext(), getString(R.string.toast_publicada), Toast.LENGTH_SHORT).show()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.navFragment, MisOfertasFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
             .addOnFailureListener {
                 Toast.makeText(requireContext(), getString(R.string.toast_error, it.message), Toast.LENGTH_LONG).show()
             }
     }
 
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
