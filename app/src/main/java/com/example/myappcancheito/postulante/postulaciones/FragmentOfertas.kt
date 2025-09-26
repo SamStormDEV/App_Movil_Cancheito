@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myappcancheito.R
 import com.example.myappcancheito.empleador.ofertas.Offer
-import com.example.myappcancheito.postulante.adapter.OfertasAdapter
+import com.example.myappcancheito.postulante.OfertaAdapter
 import com.google.firebase.database.*
 
 class FragmentOfertas : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private val listaOfertas = mutableListOf<Offer>()
-    private lateinit var adapter: OfertasAdapter
+    private lateinit var ofertaAdapter: OfertaAdapter
+    private lateinit var ofertaList: MutableList<Offer>
     private lateinit var dbRef: DatabaseReference
 
     override fun onCreateView(
@@ -28,37 +27,27 @@ class FragmentOfertas : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerOfertas)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = OfertasAdapter(listaOfertas)
-        recyclerView.adapter = adapter
+        ofertaList = mutableListOf()
+        ofertaAdapter = OfertaAdapter(ofertaList)
+        recyclerView.adapter = ofertaAdapter
 
         dbRef = FirebaseDatabase.getInstance().getReference("ofertas")
 
-        cargarOfertas()
-
-        return view
-    }
-
-    private fun cargarOfertas() {
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                listaOfertas.clear()
-                if (snapshot.exists()) {
-                    // 🔥 Recorrer los dos niveles (employerId -> ofertaId)
-                    for (employerSnap in snapshot.children) {
-                        for (ofertaSnap in employerSnap.children) {
-                            val oferta = ofertaSnap.getValue(Offer::class.java)
-                            oferta?.let { listaOfertas.add(it) }
-                        }
+                ofertaList.clear()
+                for (data in snapshot.children) {
+                    val oferta = data.getValue(Offer::class.java)
+                    if (oferta != null) {
+                        ofertaList.add(oferta)
                     }
-                    adapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(requireContext(), "No hay ofertas disponibles", Toast.LENGTH_SHORT).show()
                 }
+                ofertaAdapter.notifyDataSetChanged()
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(requireContext(), "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
+
+        return view
     }
 }
