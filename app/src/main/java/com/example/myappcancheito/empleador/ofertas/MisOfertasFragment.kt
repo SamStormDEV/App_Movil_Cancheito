@@ -53,11 +53,29 @@ class MisOfertasFragment : Fragment(R.layout.fragment_mis_ofertas) {
                 }
 
                 items.forEach { offer ->
+                    // 1) Crear el item
                     val llItem = LinearLayout(requireContext()).apply {
                         orientation = LinearLayout.VERTICAL
                         setPadding(16, 16, 16, 16)
+
+                        // (opcional) efecto de click visual
+                        val attrs = intArrayOf(android.R.attr.selectableItemBackground)
+                        val typedArray = requireContext().obtainStyledAttributes(attrs)
+                        foreground = typedArray.getDrawable(0)
+                        typedArray.recycle()
                     }
 
+                    // 2) Asignar el click (ya existe llItem)
+                    llItem.setOnClickListener {
+                        val offerId = offer.id ?: return@setOnClickListener
+                        val f = PostulacionesFragment.newInstance(offerId)
+                        parentFragmentManager.beginTransaction()
+                            .replace(this@MisOfertasFragment.id, f)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+
+                    // 3) Construir los TextViews
                     val tvCargo = TextView(requireContext()).apply {
                         text = "Cargo: ${offer.cargo}"
                         textSize = 16f
@@ -87,13 +105,6 @@ class MisOfertasFragment : Fragment(R.layout.fragment_mis_ofertas) {
                     }
                     llItem.addView(tvUbicacion)
 
-                    val tvPagoAprox = TextView(requireContext()).apply {
-                        text = "Pago aproximado: ${offer.pago_aprox}"
-                        textSize = 14f
-                        setPadding(0, 0, 0, 8)
-                    }
-                    llItem.addView(tvPagoAprox)
-
                     val tvEstado = TextView(requireContext()).apply {
                         text = "Estado: ${offer.estado}"
                         textSize = 14f
@@ -111,15 +122,16 @@ class MisOfertasFragment : Fragment(R.layout.fragment_mis_ofertas) {
 
                     val separator = View(requireContext()).apply {
                         layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            1
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1
                         ).apply { setMargins(0, 8, 0, 8) }
                         setBackgroundColor(android.graphics.Color.GRAY)
                     }
                     llItem.addView(separator)
 
+                    // 4) Agregar a la lista
                     binding.llOfertas.addView(llItem)
                 }
+
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), "Error al cargar ofertas: ${error.message}", Toast.LENGTH_SHORT).show()
