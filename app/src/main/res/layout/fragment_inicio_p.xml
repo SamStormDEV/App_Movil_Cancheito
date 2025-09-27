@@ -5,10 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".postulante.Nav_Fragments_Postulante.FragmentInicioP">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOfertas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="8dp" />
 
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Cargando..."
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:visibility="gone" />
 </FrameLayout>
